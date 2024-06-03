@@ -1,7 +1,7 @@
 const express = require("express");
-const ceo = require("../controller/CeoController");
+const history = require("../controller/HistoryController");
 const router = express.Router();
 
-router.get(`/`, ceo);
+router.get(`/`, history);
 
 module.exports = router;
