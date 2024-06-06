@@ -29,7 +29,7 @@ const makeCondition = (plan, status, year) => {
 };
 
 const getConcert = async (req, res) => {
-  let { plan, status, year, page } = req.query;
+  let { plan, status, year, page, sort } = req.query;
   // date정보를 가져와서
   // all이면 아예 객체에 넣지않음
   const findCondition = makeCondition(plan, status, year);
@@ -49,6 +49,10 @@ const getConcert = async (req, res) => {
       .limit(8)
       .toArray();
   }
+  if (sort === "DESC") {
+    concert.reverse();
+  }
+
   if (!concert) {
     return res.status(StatusCodes.BAD_REQUEST).end();
   }
@@ -64,4 +68,4 @@ const getConcertDataCount = async (req, res) => {
   return res.status(StatusCodes.OK).json({ total: allData });
 };
 
-module.exports = { getConcert, getConcertDataCount };
+module.exports = { getConcert, getConcertDataCount, makeCurrent };
