@@ -12,8 +12,10 @@ const artistsRouter = require("./routes/artists.js");
 const ceoRouter = require("./routes/ceo.js");
 const historyRouter = require("./routes/history.js");
 const concertRouter = require("./routes/concert.js");
+const newsRouter = require("./routes/news.js");
 
 app.use("/artists", artistsRouter);
 app.use("/ceo", ceoRouter);
 app.use("/history", historyRouter);
 app.use("/concert", concertRouter);
+app.use("/news", newsRouter);
