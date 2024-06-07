@@ -8,12 +8,14 @@ const makeCondition = (plan) => {
     condition.plan = plan;
   }
   condition.date = { $gte: makeCurrent() };
+  return condition;
 };
 
 const getTicket = async (req, res) => {
   let { plan } = req.query;
 
   const findCondition = makeCondition(plan);
+
   const ticket = await db
     .collection("concerts")
     .find(findCondition)
