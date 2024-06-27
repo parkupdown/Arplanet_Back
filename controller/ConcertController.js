@@ -30,27 +30,51 @@ const makeCondition = (plan, status, year) => {
 
 const getConcert = async (req, res) => {
   let { plan, status, year, page, sort } = req.query;
-  // date정보를 가져와서
-  // all이면 아예 객체에 넣지않음
   const findCondition = makeCondition(plan, status, year);
   let concert;
 
-  if (page === "1") {
-    concert = await db
-      .collection("concerts")
-      .find(findCondition)
-      .limit(8)
-      .toArray();
-  } else if (page !== "1") {
-    concert = await db
-      .collection("concerts")
-      .find(findCondition)
-      .skip(page - 1 * 8)
-      .limit(8)
-      .toArray();
-  }
-  if (sort === "DESC") {
-    concert.reverse();
+  if (sort === "ASC") {
+    switch (page) {
+      case "1": {
+        concert = await db
+          .collection("concerts")
+          .find(findCondition)
+          .sort({ date: 1 })
+          .limit(8)
+          .toArray();
+        break;
+      }
+      default: {
+        concert = await db
+          .collection("concerts")
+          .find(findCondition)
+          .sort({ date: 1 })
+          .skip((page - 1) * 8)
+          .limit(8)
+          .toArray();
+      }
+    }
+  } else if (sort === "DESC") {
+    switch (page) {
+      case "1": {
+        concert = await db
+          .collection("concerts")
+          .find(findCondition)
+          .sort({ date: -1 })
+          .limit(8)
+          .toArray();
+        break;
+      }
+      default: {
+        concert = await db
+          .collection("concerts")
+          .find(findCondition)
+          .sort({ date: -1 })
+          .skip((page - 1) * 8)
+          .limit(8)
+          .toArray();
+      }
+    }
   }
 
   if (!concert) {

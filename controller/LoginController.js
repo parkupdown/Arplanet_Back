@@ -16,6 +16,7 @@ const login = async (req, res) => {
     const token = makeJwt(admin.id, admin.nick);
     return res.status(StatusCodes.OK).send(token);
   }
+  return res.status(StatusCodes.UNAUTHORIZED).end();
 };
 
 const makeJwt = (id, nick) => {

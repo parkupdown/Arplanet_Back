@@ -5,20 +5,52 @@ const getNews = async (req, res) => {
   let { page, sort } = req.query;
 
   let news;
-
-  if (page === "1") {
-    news = await db
-      .collection("news")
-      .find()
-      .limit(10)
-      .sort({ date: 1 })
-      .toArray();
-  } else if (page !== "1") {
-    news = await db.collection("news").find().skip(10).limit(10).toArray();
-  }
-
-  if (sort === "DESC") {
-    news.reverse();
+  // sort가 ASC면
+  // 낮은거부터 정렬후
+  // sort가 DESC면
+  // 높은거부터 정렬후
+  if (sort === "ASC") {
+    switch (page) {
+      case "1": {
+        news = await db
+          .collection("news")
+          .find()
+          .sort({ date: 1 })
+          .limit(10)
+          .toArray();
+        break;
+      }
+      default: {
+        news = await db
+          .collection("news")
+          .find()
+          .sort({ date: 1 })
+          .skip((page - 1) * 10)
+          .limit(10)
+          .toArray();
+      }
+    }
+  } else if (sort === "DESC") {
+    switch (page) {
+      case "1": {
+        news = await db
+          .collection("news")
+          .find()
+          .sort({ date: -1 })
+          .limit(10)
+          .toArray();
+        break;
+      }
+      default: {
+        news = await db
+          .collection("news")
+          .find()
+          .sort({ date: -1 })
+          .skip((page - 1) * 10)
+          .limit(10)
+          .toArray();
+      }
+    }
   }
 
   if (!news) {
