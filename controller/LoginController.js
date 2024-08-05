@@ -12,9 +12,11 @@ const login = async (req, res) => {
   const hashPw = crypto
     .pbkdf2Sync(pw, admin.salt, 10000, 10, process.env.ALGORITHM)
     .toString("base64");
+
   if (hashPw === admin.pw && id === admin.id) {
     const token = makeJwt(admin.id, admin.nick);
-    return res.status(StatusCodes.OK).send(token);
+    res.setHeader(`Authorization`, token);
+    return res.status(StatusCodes.OK).end();
   }
   return res.status(StatusCodes.UNAUTHORIZED).end();
 };

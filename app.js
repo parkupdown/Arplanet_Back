@@ -4,8 +4,11 @@ const cors = require("cors");
 require("dotenv").config();
 const { dbRun } = require("./db");
 app.listen(process.env.PORT, () => console.log("열림"));
-app.use(cors({ origin: true, credentials: true }));
+app.use(
+  cors({ origin: true, credentials: true, exposedHeaders: ["Authorization"] })
+);
 app.use(express.json());
+
 dbRun();
 
 const artistsRouter = require("./routes/artists.js");
